@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>rgb canvas</title>
+</head>
+<body>
+	<canvas id="canvas">
+	<style>
+	html, body {
+		overflow: visible;
+	}
+	</style>
+	<script>
+		
+		function init()
+		{
+			canvas = document.getElementById("canvas");
+
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			
+			canvasW = canvas.width;
+			canvasH = canvas.height;
+			
+			canvasWa = canvasW - 50.5;
+			canvasHa = canvasH - 50.5;
+			
+			console.log(canvasW + " * " + canvasH);
+		}
+		
+		init();
+		
+		var c = document.getElementById("canvas");
+		var ctx = c.getContext("2d");
+		
+		ctx.strokeStyle = "#000000";
+		
+		ctx.moveTo(0, 0);
+		ctx.lineTo(0, canvasHa);
+		
+		for(i=0.5; i < canvasHa; i += 10) {
+			ctx.moveTo(0, i);
+			ctx.lineTo(5, i);
+		}
+		
+		ctx.moveTo(0, 0);
+		ctx.lineTo(canvasWa , 0);
+		
+		for(i=0.5; i < canvasWa; i += 10) {
+			ctx.moveTo(i, 0);
+			ctx.lineTo(i, 5);
+		}
+		 
+		ctx.font = "bold 12px sans-serif";
+		ctx.fillText("x", canvas.width - 50, 10);
+		ctx.fillText("y", 10, canvas.height - 50);
+		 
+		ctx.stroke();
+		
+		var go = true;
+		
+		(async function(){
+			
+			while(!go) 
+			{
+				await new Promise(r => setTimeout(r, 300));
+			}
+			
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			r = Math.floor(255 * Math.random());
+			g = Math.floor(255 * Math.random());
+			b = Math.floor(255 * Math.random());
+			
+			cr = "#" + (r << 16).toString(16);
+			cg = "#00" + (g << 8).toString(16);
+			cb = "#0000" + b.toString(16);
+			c = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+			
+			
+			ctx.fillStyle = cr
+			ctx.fillRect(20.5, 20.5, 100, canvasHa);
+			//ctx.strokeRect(20.5, 20.5, 100, canvasHa);
+			ctx.fillStyle = "#000000";
+			ctx.fillText(cr, 50, canvasHa + 40);
+			
+			ctx.fillStyle = cg;
+			ctx.fillRect(140.5, 20.5, 100, canvasHa);
+			//ctx.strokeRect(140.5, 20.5, 100, canvasHa);
+			ctx.fillStyle = "#000000";
+			ctx.fillText(cg, 170, canvasHa + 40);
+			
+			ctx.fillStyle = cb;
+			ctx.fillRect(260.5, 20.5, 100, canvasHa);
+			//ctx.strokeRect(260.5, 20.5, 100, canvasHa);
+			ctx.fillStyle = "#000000";
+			ctx.fillText(cb, 290, canvasHa + 40);
+
+			ctx.fillStyle = c;
+			ctx.fillRect(500.5, 20.5, 100, canvasHa);
+			ctx.fillStyle = "#000000";
+			//ctx.strokeRect(500.5, 20.5, 100, canvasHa);
+			
+			setTimeout(arguments.callee, 300);
+		})();
+		
+		
+		document.body.onkeydown = function(e){
+			if(e.keyCode == 32){
+				go = !go;
+			}
+		}	
+	</script>
+</body>
+</html>
